@@ -3,41 +3,424 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CIO-OS Offi&#99;ial</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/jpeg" href="logo1.jpg">
+    <title>CIO-OS Official</title>
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-        
-        body { background-color: #ffffff !important; color: #121212; height: 100vh; display: flex; justify-content: center; align-items: center; position: relative; }
-        
-        /* Info Button */
-        .info-btn { position: absolute; top: 20px; right: 20px; background: #f0f0f0; border: 1px solid #ccc; padding: 8px 16px; border-radius: 20px; cursor: pointer; font-weight: bold; }
-        
-        .container { text-align: center; padding: 20px; }
-        .logo { width: 300px; height: auto; margin-bottom: 20px; }
-        
-        /* Modal Window */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
-        .modal-content { background: white; padding: 25px; border-radius: 12px; width: 85%; max-width: 320px; text-align: left; line-height: 1.6; }
-        .modal-content h2 { text-align: center; margin-bottom: 12px; color: #121212; }
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #121212;
+            --card-bg: #f8f9fa;
+            --border-color: #e0e0e0;
+            --menu-bg: #ffffff;
+            --btn-bg: #f0f0f0;
+            --btn-hover: #e0e0e0;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #121212;
+            --text-color: #f0f0f0;
+            --card-bg: #1e1e1e;
+            --border-color: #333333;
+            --menu-bg: #1a1a1a;
+            --btn-bg: #2a2a2a;
+            --btn-hover: #3a3a3a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; transition: background-color 0.3s, color 0.3s; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Üst Bar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 25px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            background: var(--bg-color);
+            z-index: 100;
+        }
+
+        .left-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Üç Çizgi Menü İkonu */
+        .menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 5px;
+        }
+
+        .menu-btn span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--text-color);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 18px;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .logo-area img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .right-title {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        /* Sol Kayar Menü (Drawer) */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background-color: var(--menu-bg);
+            border-right: 1px solid var(--border-color);
+            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: left 0.4s cubic-bezier(0.77,0,0.175,1);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-header {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-sidebar {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sidebar-menu li button {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            padding: 12px 15px;
+            font-size: 16px;
+            color: var(--text-color);
+            border-radius: 8px;
+            cursor: pointer;
+            display: block;
+        }
+
+        .sidebar-menu li button:hover {
+            background-color: var(--btn-hover);
+        }
+
+        /* Arka Plan Karartma (Overlay) */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(3px);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Ana İçerik Alanı */
+        main {
+            flex: 1;
+            padding: 30px 20px;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .rom-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        @media(min-width: 600px) {
+            .rom-card {
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+
+        .rom-img {
+            width: 100%;
+            max-width: 200px;
+            height: auto;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+        }
+
+        .rom-details h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .rom-details p {
+            font-size: 15px;
+            opacity: 0.8;
+            line-height: 1.5;
+            margin-bottom: 4px;
+        }
+
+        .upcoming-text {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            opacity: 0.6;
+            padding: 20px;
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+        }
+
+        /* Modal Pencereler */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: var(--menu-bg);
+            color: var(--text-color);
+            padding: 25px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            position: relative;
+            animation: modalOpen 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes modalOpen {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-content h2 {
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .modal-content p, .modal-content label {
+            font-size: 15px;
+            margin-bottom: 10px;
+            display: block;
+            line-height: 1.5;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-color);
+        }
+
+        .theme-buttons, .lang-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .theme-btn, .lang-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--btn-bg);
+            color: var(--text-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .theme-btn.active, .lang-btn.active {
+            border-color: #2e7d32;
+            background: #2e7d32;
+            color: #fff;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 13px;
+            opacity: 0.6;
+            border-top: 1px solid var(--border-color);
+        }
     </style>
 </head>
-<body>
+<body data-theme="light">
 
-    <button class="info-btn" onclick="document.getElementById('myModal').style.display='flex'">Info</button>
+    <!-- Üst Bar -->
+    <header>
+        <div class="left-header">
+            <button class="menu-btn" onclick="toggleSidebar()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="logo-area">
+                <img src="logo.jpg" alt="Logo">
+                <span>CIO-OS</span>
+            </div>
+        </div>
+        <div class="right-title" id="navTitle">Custom Roms</div>
+    </header>
 
-    <div class="container">
-        <img src="logo1.jpg" alt="CIO-OS Logo" class="logo">
-        <h1>CIO-OS Offi&#99;ial</h1>
-        <p>Website under construction. Coming soon.</p>
+    <!-- Sol Kayar Menü -->
+    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span id="menuHeaderTitle">Menu</span>
+            <button class="close-sidebar" onclick="toggleSidebar()">&times;</button>
+        </div>
+        <ul class="sidebar-menu">
+            <li><button onclick="openModal('settingsModal')">⚙️ <span id="mSettings">Ayarlar</span></button></li>
+            <li><button onclick="openModal('contactModal')">📞 <span id="mContact">Ulaşım</span></button></li>
+            <li><button onclick="openModal('aboutModal')">ℹ️ <span id="mAbout">Bizle İlgili</span></button></li>
+            <li><button onclick="openModal('bugModal')">🐛 <span id="mBug">Hata Bildirme</span></button></li>
+            <li><button onclick="openModal('surveyModal')">📊 <span id="mSurvey">Anket</span></button></li>
+        </ul>
     </div>
 
-    <div id="myModal" class="modal" onclick="this.style.display='none'">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <h2>CIO-OS Meaning</h2>
+    <!-- Ana İçerik -->
+    <main>
+        <h2 class="section-title" id="mainHeaderTitle">Custom Roms</h2>
+        
+        <!-- Note 3 Rom Kutusu -->
+        <div class="rom-card">
+            <img src="N9000.png" alt="Note 3 Resmi" class="rom-img">
+            <div class="rom-details">
+                <h3 id="romName">Samsung Galaxy Note 3</h3>
+                <p><strong>Exynos / Snapdragon</strong></p>
+                <p><strong>Model:</strong> N9000 / N9000Q</p>
+                <p><strong>Codename:</strong> ha3g</p>
+            </div>
+        </div>
+
+        <div class="upcoming-text" id="upcomingText">
+            Yeni Romlar Sonra Gelecek...
+        </div>
+    </main>
+
+    <!-- AYARLAR MODALI -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('settingsModal')">&times;</button>
+            <h2>Ayarlar</h2>
+            <label>Arka Menü Rengi (Tema):</label>
+            <div class="theme-buttons">
+                <button class="theme-btn active" id="btnLight" onclick="setTheme('light')">Beyaz</button>
+                <button class="theme-btn" id="btnDark" onclick="setTheme('dark')">Siyah</button>
+            </div>
+            <label>Dil Seçimi (Language):</label>
+            <div class="lang-buttons">
+                <button class="lang-btn active" id="langTr" onclick="setLang('tr')">Türkçe</button>
+                <button class="lang-btn" id="langEn" onclick="setLang('en')">English</button>
+                <button class="lang-btn" id="langDe" onclick="setLang('de')">Deutsch</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ULAŞIM MODALI -->
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('contactModal')">&times;</button>
+            <h2>Ulaşım</h2>
+            <p><strong>Gmail:</strong><br>ciooosofficial@gmail.com</p>
+            <p style="margin-top: 15px;"><strong>İnstagram:</strong><br>cio_os_official</p>
+        </div>
+    </div>
+
+    <!-- BİZLE İLGİLİ MODALI -->
+    <div class="modal" id="aboutModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('aboutModal')">&times;</button>
+            <h2>Bizle İlgili</h2>
             <p><strong>C:</strong> Custom</p>
             <p><strong>I:</strong> Innovator</p>
             <p><strong>O:</strong> Optimized</p>
@@ -47,5 +430,103 @@
         </div>
     </div>
 
+    <!-- HATA BİLDİRME MODALI -->
+    <div class="modal" id="bugModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('bugModal')">&times;</button>
+            <h2>Hata Bildirme</h2>
+            <p><strong>Gmail:</strong><br>ciooosofficial@gmail.com</p>
+            <p style="margin-top: 15px;"><strong>İnstagram:</strong><br>cio_os_official</p>
+        </div>
+    </div>
+
+    <!-- ANKET MODALI -->
+    <div class="modal" id="surveyModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('surveyModal')">&times;</button>
+            <h2>Anket</h2>
+            <p>İstediğiniz Cihaza Custom Rom Seçeneğinizi Yazın.</p>
+            <p style="margin-top: 10px; font-weight: bold; color: #2e7d32;">Buraya Yazabilirsiniz (Instagram: cio_os_official)</p>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 CIO-OS Project. All rights reserved.
+    </footer>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
+        function openModal(modalId) {
+            toggleSidebar();
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function setTheme(theme) {
+            document.body.setAttribute('data-theme', theme);
+            if(theme === 'dark') {
+                document.getElementById('btnDark').classList.add('active');
+                document.getElementById('btnLight').classList.remove('active');
+            } else {
+                document.getElementById('btnLight').classList.add('active');
+                document.getElementById('btnDark').classList.remove('active');
+            }
+        }
+
+        const texts = {
+            tr: {
+                menuTitle: "Menü",
+                settings: "Ayarlar",
+                contact: "Ulaşım",
+                about: "Bizle İlgili",
+                bug: "Hata Bildirme",
+                survey: "Anket",
+                customRoms: "Custom Roms",
+                upcoming: "Yeni Romlar Sonra Gelecek..."
+            },
+            en: {
+                menuTitle: "Menu",
+                settings: "Settings",
+                contact: "Contact",
+                about: "About Us",
+                bug: "Bug Report",
+                survey: "Survey",
+                customRoms: "Custom ROMs",
+                upcoming: "New ROMs Coming Soon..."
+            },
+            de: {
+                menuTitle: "Menü",
+                settings: "Einstellungen",
+                contact: "Kontakt",
+                about: "Über Uns",
+                bug: "Fehler melden",
+                survey: "Umfrage",
+                customRoms: "Custom ROMs",
+                upcoming: "Neue ROMs folgen in Kürze..."
+            }
+        };
+
+        function setLang(lang) {
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('lang' + lang.charAt(0).toUpperCase() + lang.slice(1)).classList.add('active');
+
+            document.getElementById('menuHeaderTitle').innerText = texts[lang].menuTitle;
+            document.getElementById('mSettings').innerText = texts[lang].settings;
+            document.getElementById('mContact').innerText = texts[lang].contact;
+            document.getElementById('mAbout').innerText = texts[lang].about;
+            document.getElementById('mBug').innerText = texts[lang].bug;
+            document.getElementById('mSurvey').innerText = texts[lang].survey;
+            document.getElementById('navTitle').innerText = texts[lang].customRoms;
+            document.getElementById('mainHeaderTitle').innerText = texts[lang].customRoms;
+            document.getElementById('upcomingText').innerText = texts[lang].upcoming;
+        }
+    </script>
 </body>
 </html>
