@@ -34,7 +34,7 @@
             padding: 0; 
             box-sizing: border-box; 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            -webkit-tap-highlight-color: transparent; /* Mobildeki gri/mavi basılma efektini tamamen kaldırır */
+            -webkit-tap-highlight-color: transparent; 
         }
 
         body {
@@ -59,21 +59,19 @@
             z-index: 100;
         }
 
+        /* Sadece Logo Alanı (Yazı Kaldırıldı) */
         .logo-area {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-weight: bold;
-            font-size: 18px;
             text-decoration: none;
-            color: var(--text-color);
         }
 
         .logo-area img {
-            width: 35px;
-            height: 35px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             object-fit: cover;
+            border: 1px solid var(--border-color);
         }
 
         .right-title {
@@ -92,7 +90,7 @@
             overflow-x: auto;
             white-space: nowrap;
             position: sticky;
-            top: 66px;
+            top: 71px;
             z-index: 90;
         }
 
@@ -269,16 +267,13 @@
 </head>
 <body data-theme="light">
 
-    <!-- Üst Bar -->
     <header>
         <a href="#" class="logo-area">
             <img src="logo1.jpg" alt="Logo">
-            <span>CIO-OS</span>
         </a>
         <div class="right-title" id="navTitle">Custom ROMs</div>
     </header>
 
-    <!-- Üst Yatay Yan Yana Seçenekler Barı -->
     <div class="top-menu-bar">
         <button type="button" onclick="openModal('settingsModal')">⚙️ <span id="mSettings">Settings</span></button>
         <button type="button" onclick="openModal('contactModal')">📞 <span id="mContact">Contact</span></button>
@@ -287,11 +282,9 @@
         <button type="button" onclick="openModal('surveyModal')">📊 <span id="mSurvey">Survey</span></button>
     </div>
 
-    <!-- Ana İçerik -->
     <main>
         <h2 class="section-title" id="mainHeaderTitle">Custom ROMs</h2>
         
-        <!-- Note 3 Rom Kutusu -->
         <div class="rom-card">
             <img src="N9000.png" alt="Note 3 Resmi" class="rom-img">
             <div class="rom-details">
@@ -307,7 +300,6 @@
             </div>
         </div>
 
-        <!-- Grand Prime Plus Rom Kutusu -->
         <div class="rom-card">
             <img src="grandpp.png" alt="Grand Prime Plus Resmi" class="rom-img">
             <div class="rom-details">
@@ -327,7 +319,6 @@
         </div>
     </main>
 
-    <!-- AYARLAR MODALI -->
     <div class="modal" id="settingsModal" onclick="if(event.target === this) closeModal('settingsModal')">
         <div class="modal-content">
             <button type="button" class="modal-close" onclick="closeModal('settingsModal')">&times;</button>
@@ -346,7 +337,6 @@
         </div>
     </div>
 
-    <!-- ULAŞIM MODALI -->
     <div class="modal" id="contactModal" onclick="if(event.target === this) closeModal('contactModal')">
         <div class="modal-content">
             <button type="button" class="modal-close" onclick="closeModal('contactModal')">&times;</button>
@@ -356,7 +346,6 @@
         </div>
     </div>
 
-    <!-- BİZLE İLGİLİ MODALI -->
     <div class="modal" id="aboutModal" onclick="if(event.target === this) closeModal('aboutModal')">
         <div class="modal-content">
             <button type="button" class="modal-close" onclick="closeModal('aboutModal')">&times;</button>
@@ -372,7 +361,6 @@
         </div>
     </div>
 
-    <!-- HATA BİLDİRME MODALI -->
     <div class="modal" id="bugModal" onclick="if(event.target === this) closeModal('bugModal')">
         <div class="modal-content">
             <button type="button" class="modal-close" onclick="closeModal('bugModal')">&times;</button>
@@ -382,7 +370,6 @@
         </div>
     </div>
 
-    <!-- ANKET MODALI -->
     <div class="modal" id="surveyModal" onclick="if(event.target === this) closeModal('surveyModal')">
         <div class="modal-content">
             <button type="button" class="modal-close" onclick="closeModal('surveyModal')">&times;</button>
@@ -529,5 +516,11 @@
             document.getElementById('suDesc').innerText = texts[lang].suDesc;
             document.getElementById('suSub').innerText = texts[lang].suSub;
 
-            document.getElementById('noteTested').innerText = texts[la
-            
+            document.getElementById('noteTested').innerText = texts[lang].noteTested;
+            document.getElementById('downloadText').innerText = texts[lang].downloadText;
+            document.getElementById('romDevStatus').innerText = texts[lang].romDevStatus;
+
+            const labels1 = document.querySelectorAll('.rom-card:nth-child(2) .rom-details p strong');
+            if(labels1.length >= 4) {
+                labels1[0].innerText = texts[lang].proc;
+                labels1[1].innerText
