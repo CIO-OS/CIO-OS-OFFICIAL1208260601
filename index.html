@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CIO-OS Official</title>
-    <link rel="icon" type="image/jpeg" href="logo1.jpg">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
 
     <style>
         :root {
@@ -59,19 +59,18 @@
             z-index: 100;
         }
 
-        /* Sadece Logo Alanı (Yazı Kaldırıldı) */
+        /* Dikdörtgen Logo Alanı */
         .logo-area {
             display: flex;
             align-items: center;
             text-decoration: none;
+            z-index: 102;
         }
 
         .logo-area img {
-            width: 40px;
             height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1px solid var(--border-color);
+            width: auto;
+            object-fit: contain;
         }
 
         .right-title {
@@ -79,7 +78,7 @@
             font-size: 16px;
         }
 
-        /* Üst Yatay Menü Barı */
+        /* Üst Yatay Menü Barı (Tıklama Garantili) */
         .top-menu-bar {
             background-color: var(--menu-bg);
             border-bottom: 1px solid var(--border-color);
@@ -91,7 +90,7 @@
             white-space: nowrap;
             position: sticky;
             top: 71px;
-            z-index: 90;
+            z-index: 99;
         }
 
         .top-menu-bar::-webkit-scrollbar {
@@ -109,6 +108,9 @@
             font-weight: 500;
             flex-shrink: 0;
             outline: none;
+            pointer-events: auto; /* Tıklanabilirliği garanti eder */
+            position: relative;
+            z-index: 101;
         }
 
         .top-menu-bar button:hover {
@@ -202,7 +204,7 @@
             backdrop-filter: blur(4px);
             justify-content: center;
             align-items: center;
-            z-index: 4000;
+            z-index: 9999;
             padding: 20px;
         }
 
@@ -269,7 +271,7 @@
 
     <header>
         <a href="#" class="logo-area">
-            <img src="logo1.jpg" alt="Logo">
+            <img src="logo.jpg" alt="Logo">
         </a>
         <div class="right-title" id="navTitle">Custom ROMs</div>
     </header>
@@ -522,5 +524,5 @@
 
             const labels1 = document.querySelectorAll('.rom-card:nth-child(2) .rom-details p strong');
             if(labels1.length >= 4) {
-                labels1[0].innerText = texts[lang].proc;
-                labels1[1].innerText
+
+           
