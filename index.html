@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CIO-OS Official</title>
-    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="icon" type="image/jpeg" href="logo1.jpg">
 
     <style>
         :root {
@@ -12,9 +12,10 @@
             --text-color: #121212;
             --card-bg: #f8f9fa;
             --border-color: #e0e0e0;
-            --menu-bg: #ffffff;
-            --btn-bg: #f0f0f0;
-            --btn-hover: #e0e0e0;
+            --menu-bg: #f8f9fa;
+            --btn-bg: #ffffff;
+            --btn-hover: #e9ecef;
+            --link-color: #0275d8;
         }
 
         [data-theme="dark"] {
@@ -22,12 +23,19 @@
             --text-color: #f0f0f0;
             --card-bg: #1e1e1e;
             --border-color: #333333;
-            --menu-bg: #1a1a1a;
-            --btn-bg: #2a2a2a;
-            --btn-hover: #3a3a3a;
+            --menu-bg: #181818;
+            --btn-bg: #222222;
+            --btn-hover: #2a2a2a;
+            --link-color: #5bc0de;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; transition: background-color 0.3s, color 0.3s; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            -webkit-tap-highlight-color: transparent; /* Mobildeki gri/mavi basılma efektini tamamen kaldırır */
+        }
 
         body {
             background-color: var(--bg-color);
@@ -49,31 +57,6 @@
             top: 0;
             background: var(--bg-color);
             z-index: 100;
-        }
-
-        .left-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        /* Üç Çizgi Menü İkonu */
-        .menu-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            padding: 5px;
-        }
-
-        .menu-btn span {
-            width: 25px;
-            height: 3px;
-            background-color: var(--text-color);
-            border-radius: 2px;
-            transition: 0.3s;
         }
 
         .logo-area {
@@ -98,88 +81,40 @@
             font-size: 16px;
         }
 
-        /* Sol Kayar Menü (Drawer) */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -280px;
-            width: 280px;
-            height: 100%;
+        /* Üst Yatay Menü Barı */
+        .top-menu-bar {
             background-color: var(--menu-bg);
-            border-right: 1px solid var(--border-color);
-            box-shadow: 5px 0 15px rgba(0,0,0,0.1);
-            z-index: 1000;
-            transition: left 0.4s cubic-bezier(0.77,0,0.175,1);
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-        }
-
-        .sidebar.active {
-            left: 0;
-        }
-
-        .sidebar-header {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 25px;
-            padding-bottom: 10px;
             border-bottom: 1px solid var(--border-color);
+            padding: 10px 20px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-        }
-
-        .close-sidebar {
-            background: none;
-            border: none;
-            font-size: 22px;
-            cursor: pointer;
-            color: var(--text-color);
-        }
-
-        .sidebar-menu {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
             gap: 10px;
+            overflow-x: auto;
+            white-space: nowrap;
+            position: sticky;
+            top: 66px;
+            z-index: 90;
         }
 
-        .sidebar-menu li button {
-            width: 100%;
-            text-align: left;
-            background: none;
-            border: none;
-            padding: 12px 15px;
-            font-size: 16px;
+        .top-menu-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .top-menu-bar button {
+            background: var(--btn-bg);
+            border: 1px solid var(--border-color);
+            padding: 8px 14px;
+            font-size: 14px;
             color: var(--text-color);
             border-radius: 8px;
             cursor: pointer;
-            display: block;
+            font-weight: 500;
+            flex-shrink: 0;
+            outline: none;
         }
 
-        .sidebar-menu li button:hover {
+        .top-menu-bar button:hover {
             background-color: var(--btn-hover);
-        }
-
-        /* Arka Plan Karartma (Overlay) */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(3px);
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: 0.3s;
-        }
-
-        .overlay.active {
-            opacity: 1;
-            visibility: visible;
         }
 
         /* Ana İçerik Alanı */
@@ -189,11 +124,14 @@
             max-width: 900px;
             width: 100%;
             margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .section-title {
             font-size: 24px;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
             font-weight: 700;
         }
 
@@ -226,18 +164,28 @@
 
         .rom-details h3 {
             font-size: 20px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .rom-details p {
-            font-size: 15px;
-            opacity: 0.8;
-            line-height: 1.5;
-            margin-bottom: 4px;
+            font-size: 14px;
+            opacity: 0.85;
+            line-height: 1.4;
+            margin-bottom: 3px;
+        }
+
+        .rom-details a {
+            color: var(--link-color);
+            word-break: break-all;
+            text-decoration: none;
+        }
+
+        .rom-details a:hover {
+            text-decoration: underline;
         }
 
         .upcoming-text {
-            margin-top: 30px;
+            margin-top: 10px;
             text-align: center;
             font-size: 16px;
             font-weight: 600;
@@ -256,37 +204,23 @@
             backdrop-filter: blur(4px);
             justify-content: center;
             align-items: center;
-            z-index: 2000;
+            z-index: 4000;
             padding: 20px;
         }
 
+        .modal.active {
+            display: flex !important;
+        }
+
         .modal-content {
-            background-color: var(--menu-bg);
+            background-color: var(--card-bg);
             color: var(--text-color);
             padding: 25px;
             border-radius: 16px;
             width: 100%;
             max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             position: relative;
-            animation: modalOpen 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes modalOpen {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .modal-content h2 {
-            margin-bottom: 15px;
-            font-size: 20px;
-        }
-
-        .modal-content p, .modal-content label {
-            font-size: 15px;
-            margin-bottom: 10px;
-            display: block;
-            line-height: 1.5;
         }
 
         .modal-close {
@@ -295,7 +229,7 @@
             right: 15px;
             background: none;
             border: none;
-            font-size: 20px;
+            font-size: 24px;
             cursor: pointer;
             color: var(--text-color);
         }
@@ -337,90 +271,98 @@
 
     <!-- Üst Bar -->
     <header>
-        <div class="left-header">
-            <button class="menu-btn" onclick="toggleSidebar()">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <div class="logo-area">
-                <img src="logo.jpg" alt="Logo">
-                <span>CIO-OS</span>
-            </div>
-        </div>
-        <div class="right-title" id="navTitle">Custom Roms</div>
+        <a href="#" class="logo-area">
+            <img src="logo1.jpg" alt="Logo">
+            <span>CIO-OS</span>
+        </a>
+        <div class="right-title" id="navTitle">Custom ROMs</div>
     </header>
 
-    <!-- Sol Kayar Menü -->
-    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <span id="menuHeaderTitle">Menu</span>
-            <button class="close-sidebar" onclick="toggleSidebar()">&times;</button>
-        </div>
-        <ul class="sidebar-menu">
-            <li><button onclick="openModal('settingsModal')">⚙️ <span id="mSettings">Ayarlar</span></button></li>
-            <li><button onclick="openModal('contactModal')">📞 <span id="mContact">Ulaşım</span></button></li>
-            <li><button onclick="openModal('aboutModal')">ℹ️ <span id="mAbout">Bizle İlgili</span></button></li>
-            <li><button onclick="openModal('bugModal')">🐛 <span id="mBug">Hata Bildirme</span></button></li>
-            <li><button onclick="openModal('surveyModal')">📊 <span id="mSurvey">Anket</span></button></li>
-        </ul>
+    <!-- Üst Yatay Yan Yana Seçenekler Barı -->
+    <div class="top-menu-bar">
+        <button type="button" onclick="openModal('settingsModal')">⚙️ <span id="mSettings">Settings</span></button>
+        <button type="button" onclick="openModal('contactModal')">📞 <span id="mContact">Contact</span></button>
+        <button type="button" onclick="openModal('aboutModal')">ℹ️ <span id="mAbout">About Us</span></button>
+        <button type="button" onclick="openModal('bugModal')">😐 <span id="mBug">Bug Report</span></button>
+        <button type="button" onclick="openModal('surveyModal')">📊 <span id="mSurvey">Survey</span></button>
     </div>
 
     <!-- Ana İçerik -->
     <main>
-        <h2 class="section-title" id="mainHeaderTitle">Custom Roms</h2>
+        <h2 class="section-title" id="mainHeaderTitle">Custom ROMs</h2>
         
         <!-- Note 3 Rom Kutusu -->
         <div class="rom-card">
             <img src="N9000.png" alt="Note 3 Resmi" class="rom-img">
             <div class="rom-details">
-                <h3 id="romName">Samsung Galaxy Note 3</h3>
-                <p><strong>Exynos / Snapdragon</strong></p>
-                <p><strong>Model:</strong> N9000 / N9000Q</p>
-                <p><strong>Codename:</strong> ha3g</p>
+                <h3>Samsung Galaxy Note 3</h3>
+                <p><strong id="pProc1">Processor:</strong> Exynos 5420 Octa</p>
+                <p><strong id="pModel1">Model Number:</strong> SM-N9000 / SM-N9000Q</p>
+                <p><strong id="pCode1">Codename:</strong> ha3g</p>
+                <p><strong id="pDate1">Release Date:</strong> September 2013</p>
+                <div style="margin-top: 10px; border-top: 1px solid var(--border-color); padding-top: 8px;">
+                    <p style="font-weight: bold; color: #2e7d32;">CIO-OS 7.1 <span style="font-size: 12px; font-weight: normal; opacity: 0.8;" id="noteTested">(Not Tested)</span></p>
+                    <p style="font-size: 13px;"><a href="https://drive.google.com/file/d/1BryiHECNac5TByDATki30PcGUt5ksqMt/view?usp=drivesdk" target="_blank" id="downloadText">Download ROM Link</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grand Prime Plus Rom Kutusu -->
+        <div class="rom-card">
+            <img src="grandpp.png" alt="Grand Prime Plus Resmi" class="rom-img">
+            <div class="rom-details">
+                <h3>Samsung Galaxy Grand Prime Plus</h3>
+                <p><strong id="pProc2">Processor:</strong> MediaTek MT6737T Quad-core</p>
+                <p><strong id="pModel2">Model Number:</strong> SM-G532F / SM-G532M</p>
+                <p><strong id="pCode2">Codename:</strong> grandpp / g532</p>
+                <p><strong id="pDate2">Release Date:</strong> November 2016</p>
+                <div style="margin-top: 10px; border-top: 1px solid var(--border-color); padding-top: 8px;">
+                    <p style="font-weight: bold; color: #d9534f;">CIO-OS 8.1 GO <span style="font-size: 12px; font-weight: normal; opacity: 0.8;" id="romDevStatus">(Under Development / Coming Soon)</span></p>
+                </div>
             </div>
         </div>
 
         <div class="upcoming-text" id="upcomingText">
-            Yeni Romlar Sonra Gelecek...
+            New ROMs Coming Soon...
         </div>
     </main>
 
     <!-- AYARLAR MODALI -->
-    <div class="modal" id="settingsModal">
+    <div class="modal" id="settingsModal" onclick="if(event.target === this) closeModal('settingsModal')">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('settingsModal')">&times;</button>
-            <h2>Ayarlar</h2>
-            <label>Arka Menü Rengi (Tema):</label>
+            <button type="button" class="modal-close" onclick="closeModal('settingsModal')">&times;</button>
+            <h2 id="sTitle">Settings</h2>
+            <label id="sThemeLabel">Theme (Background):</label>
             <div class="theme-buttons">
-                <button class="theme-btn active" id="btnLight" onclick="setTheme('light')">Beyaz</button>
-                <button class="theme-btn" id="btnDark" onclick="setTheme('dark')">Siyah</button>
+                <button type="button" class="theme-btn active" id="btnLight" onclick="setTheme('light')">White / Weiß</button>
+                <button type="button" class="theme-btn" id="btnDark" onclick="setTheme('dark')">Black / Schwarz</button>
             </div>
-            <label>Dil Seçimi (Language):</label>
+            <label id="sLangLabel">Language:</label>
             <div class="lang-buttons">
-                <button class="lang-btn active" id="langTr" onclick="setLang('tr')">Türkçe</button>
-                <button class="lang-btn" id="langEn" onclick="setLang('en')">English</button>
-                <button class="lang-btn" id="langDe" onclick="setLang('de')">Deutsch</button>
+                <button type="button" class="lang-btn" id="langTr" onclick="setLang('tr')">Türkçe</button>
+                <button type="button" class="lang-btn active" id="langEn" onclick="setLang('en')">English</button>
+                <button type="button" class="lang-btn" id="langDe" onclick="setLang('de')">Deutsch</button>
             </div>
         </div>
     </div>
 
     <!-- ULAŞIM MODALI -->
-    <div class="modal" id="contactModal">
+    <div class="modal" id="contactModal" onclick="if(event.target === this) closeModal('contactModal')">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('contactModal')">&times;</button>
-            <h2>Ulaşım</h2>
+            <button type="button" class="modal-close" onclick="closeModal('contactModal')">&times;</button>
+            <h2 id="cTitle">Contact</h2>
             <p><strong>Gmail:</strong><br>ciooosofficial@gmail.com</p>
-            <p style="margin-top: 15px;"><strong>İnstagram:</strong><br>cio_os_official</p>
+            <p style="margin-top: 15px;"><strong>Instagram:</strong><br>cio_os_official</p>
         </div>
     </div>
 
     <!-- BİZLE İLGİLİ MODALI -->
-    <div class="modal" id="aboutModal">
+    <div class="modal" id="aboutModal" onclick="if(event.target === this) closeModal('aboutModal')">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('aboutModal')">&times;</button>
-            <h2>Bizle İlgili</h2>
+            <button type="button" class="modal-close" onclick="closeModal('aboutModal')">&times;</button>
+            <h2 id="aTitle">About Us</h2>
+            <p id="aDesc">This project is developed in <strong>Türkiye</strong>.</p>
+            <br>
             <p><strong>C:</strong> Custom</p>
             <p><strong>I:</strong> Innovator</p>
             <p><strong>O:</strong> Optimized</p>
@@ -431,22 +373,22 @@
     </div>
 
     <!-- HATA BİLDİRME MODALI -->
-    <div class="modal" id="bugModal">
+    <div class="modal" id="bugModal" onclick="if(event.target === this) closeModal('bugModal')">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('bugModal')">&times;</button>
-            <h2>Hata Bildirme</h2>
+            <button type="button" class="modal-close" onclick="closeModal('bugModal')">&times;</button>
+            <h2 id="bTitle">Bug Report</h2>
             <p><strong>Gmail:</strong><br>ciooosofficial@gmail.com</p>
-            <p style="margin-top: 15px;"><strong>İnstagram:</strong><br>cio_os_official</p>
+            <p style="margin-top: 15px;"><strong>Instagram:</strong><br>cio_os_official</p>
         </div>
     </div>
 
     <!-- ANKET MODALI -->
-    <div class="modal" id="surveyModal">
+    <div class="modal" id="surveyModal" onclick="if(event.target === this) closeModal('surveyModal')">
         <div class="modal-content">
-            <button class="modal-close" onclick="closeModal('surveyModal')">&times;</button>
-            <h2>Anket</h2>
-            <p>İstediğiniz Cihaza Custom Rom Seçeneğinizi Yazın.</p>
-            <p style="margin-top: 10px; font-weight: bold; color: #2e7d32;">Buraya Yazabilirsiniz (Instagram: cio_os_official)</p>
+            <button type="button" class="modal-close" onclick="closeModal('surveyModal')">&times;</button>
+            <h2 id="suTitle">Survey</h2>
+            <p id="suDesc">Write your desired Custom ROM option for any device.</p>
+            <p style="margin-top: 10px; font-weight: bold; color: #2e7d32;" id="suSub">You can write here (Instagram: cio_os_official)</p>
         </div>
     </div>
 
@@ -455,18 +397,20 @@
     </footer>
 
     <script>
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-            document.getElementById('overlay').classList.toggle('active');
-        }
-
         function openModal(modalId) {
-            toggleSidebar();
-            document.getElementById(modalId).style.display = 'flex';
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'flex';
+                modal.classList.add('active');
+            }
         }
 
         function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+                modal.classList.remove('active');
+            }
         }
 
         function setTheme(theme) {
@@ -482,34 +426,82 @@
 
         const texts = {
             tr: {
-                menuTitle: "Menü",
                 settings: "Ayarlar",
                 contact: "Ulaşım",
                 about: "Bizle İlgili",
                 bug: "Hata Bildirme",
                 survey: "Anket",
-                customRoms: "Custom Roms",
-                upcoming: "Yeni Romlar Sonra Gelecek..."
+                customRoms: "Custom ROMs",
+                upcoming: "Yeni Romlar Sonra Gelecek...",
+                sTitle: "Ayarlar",
+                sThemeLabel: "Arka Menü Rengi (Tema):",
+                sLangLabel: "Dil Seçimi (Language):",
+                cTitle: "Ulaşım",
+                aTitle: "Bizle İlgili",
+                aDesc: "Bu proje <strong>Türkiye</strong>'de geliştirilmektedir.",
+                bTitle: "Hata Bildirme",
+                suTitle: "Anket",
+                suDesc: "İstediğiniz Cihaza Custom Rom Seçeneğinizi Yazın.",
+                suSub: "Buraya Yazabilirsiniz (Instagram: cio_os_official)",
+                noteTested: "(Denenmedi)",
+                downloadText: "ROM İndirme Bağlantısı",
+                romDevStatus: "(Geliştiriliyor / Yakında)",
+                proc: "İşlemci:",
+                model: "Model Numarası:",
+                code: "Kod Adı:",
+                date: "Çıkış Tarihi:"
             },
             en: {
-                menuTitle: "Menu",
                 settings: "Settings",
                 contact: "Contact",
                 about: "About Us",
                 bug: "Bug Report",
                 survey: "Survey",
                 customRoms: "Custom ROMs",
-                upcoming: "New ROMs Coming Soon..."
+                upcoming: "New ROMs Coming Soon...",
+                sTitle: "Settings",
+                sThemeLabel: "Theme (Background):",
+                sLangLabel: "Language:",
+                cTitle: "Contact",
+                aTitle: "About Us",
+                aDesc: "This project is developed in <strong>Türkiye</strong>.",
+                bTitle: "Bug Report",
+                suTitle: "Survey",
+                suDesc: "Write your desired Custom ROM option for any device.",
+                suSub: "You can write here (Instagram: cio_os_official)",
+                noteTested: "(Not Tested)",
+                downloadText: "Download ROM Link",
+                romDevStatus: "(Under Development / Coming Soon)",
+                proc: "Processor:",
+                model: "Model Number:",
+                code: "Codename:",
+                date: "Release Date:"
             },
             de: {
-                menuTitle: "Menü",
                 settings: "Einstellungen",
                 contact: "Kontakt",
                 about: "Über Uns",
                 bug: "Fehler melden",
                 survey: "Umfrage",
                 customRoms: "Custom ROMs",
-                upcoming: "Neue ROMs folgen in Kürze..."
+                upcoming: "Neue ROMs folgen in Kürze...",
+                sTitle: "Einstellungen",
+                sThemeLabel: "Thema (Hintergrund):",
+                sLangLabel: "Sprache:",
+                cTitle: "Kontakt",
+                aTitle: "Über Uns",
+                aDesc: "Dieses Projekt wird in der <strong>Türkei</strong> entwickelt.",
+                bTitle: "Fehler melden",
+                suTitle: "Umfrage",
+                suDesc: "Schreiben Sie Ihre gewünschte Custom-ROM-Option für ein beliebiges Gerät.",
+                suSub: "Sie können hier schreiben (Instagram: cio_os_official)",
+                noteTested: "(Nicht getestet)",
+                downloadText: "ROM-Link herunterladen",
+                romDevStatus: "(In Entwicklung / Demnächst)",
+                proc: "Prozessor:",
+                model: "Modellnummer:",
+                code: "Codename:",
+                date: "Erscheinungsdatum:"
             }
         };
 
@@ -517,7 +509,6 @@
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             document.getElementById('lang' + lang.charAt(0).toUpperCase() + lang.slice(1)).classList.add('active');
 
-            document.getElementById('menuHeaderTitle').innerText = texts[lang].menuTitle;
             document.getElementById('mSettings').innerText = texts[lang].settings;
             document.getElementById('mContact').innerText = texts[lang].contact;
             document.getElementById('mAbout').innerText = texts[lang].about;
@@ -526,7 +517,17 @@
             document.getElementById('navTitle').innerText = texts[lang].customRoms;
             document.getElementById('mainHeaderTitle').innerText = texts[lang].customRoms;
             document.getElementById('upcomingText').innerText = texts[lang].upcoming;
-        }
-    </script>
-</body>
-</html>
+
+            document.getElementById('sTitle').innerText = texts[lang].sTitle;
+            document.getElementById('sThemeLabel').innerText = texts[lang].sThemeLabel;
+            document.getElementById('sLangLabel').innerText = texts[lang].sLangLabel;
+            document.getElementById('cTitle').innerText = texts[lang].cTitle;
+            document.getElementById('aTitle').innerText = texts[lang].aTitle;
+            document.getElementById('aDesc').innerHTML = texts[lang].aDesc;
+            document.getElementById('bTitle').innerText = texts[lang].bTitle;
+            document.getElementById('suTitle').innerText = texts[lang].suTitle;
+            document.getElementById('suDesc').innerText = texts[lang].suDesc;
+            document.getElementById('suSub').innerText = texts[lang].suSub;
+
+            document.getElementById('noteTested').innerText = texts[la
+            
