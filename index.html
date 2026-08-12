@@ -46,25 +46,19 @@
             overflow-x: hidden;
         }
 
-        /* Üst Bar */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 15px 25px;
             border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
             background: var(--bg-color);
-            z-index: 100;
         }
 
-        /* Dikdörtgen Logo Alanı */
         .logo-area {
             display: flex;
             align-items: center;
             text-decoration: none;
-            z-index: 102;
         }
 
         .logo-area img {
@@ -78,7 +72,6 @@
             font-size: 16px;
         }
 
-        /* Üst Yatay Menü Barı (Tıklama Garantili) */
         .top-menu-bar {
             background-color: var(--menu-bg);
             border-bottom: 1px solid var(--border-color);
@@ -88,16 +81,17 @@
             gap: 10px;
             overflow-x: auto;
             white-space: nowrap;
-            position: sticky;
-            top: 71px;
-            z-index: 99;
         }
 
         .top-menu-bar::-webkit-scrollbar {
             display: none;
         }
 
-        .top-menu-bar button {
+        .modal-toggle {
+            display: none;
+        }
+
+        .menu-btn {
             background: var(--btn-bg);
             border: 1px solid var(--border-color);
             padding: 8px 14px;
@@ -106,18 +100,82 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: 500;
-            flex-shrink: 0;
-            outline: none;
-            pointer-events: auto; /* Tıklanabilirliği garanti eder */
-            position: relative;
-            z-index: 101;
+            display: inline-block;
+            text-decoration: none;
+            user-select: none;
         }
 
-        .top-menu-bar button:hover {
+        .menu-btn:hover {
             background-color: var(--btn-hover);
         }
 
-        /* Ana İçerik Alanı */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+
+        #settings-toggle:checked ~ #settingsModal,
+        #contact-toggle:checked ~ #contactModal,
+        #about-toggle:checked ~ #aboutModal,
+        #bug-toggle:checked ~ #bugModal,
+        #survey-toggle:checked ~ #surveyModal {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            padding: 25px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        .theme-buttons, .lang-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .theme-btn, .lang-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--btn-bg);
+            color: var(--text-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .theme-btn.active, .lang-btn.active {
+            border-color: #2e7d32;
+            background: #2e7d32;
+            color: #fff;
+        }
+
         main {
             flex: 1;
             padding: 30px 20px;
@@ -195,69 +253,6 @@
             border-radius: 12px;
         }
 
-        /* Modal Pencereler */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            padding: 20px;
-        }
-
-        .modal.active {
-            display: flex !important;
-        }
-
-        .modal-content {
-            background-color: var(--card-bg);
-            color: var(--text-color);
-            padding: 25px;
-            border-radius: 16px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            position: relative;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--text-color);
-        }
-
-        .theme-buttons, .lang-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            margin-bottom: 15px;
-        }
-
-        .theme-btn, .lang-btn {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            background: var(--btn-bg);
-            color: var(--text-color);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .theme-btn.active, .lang-btn.active {
-            border-color: #2e7d32;
-            background: #2e7d32;
-            color: #fff;
-        }
-
         footer {
             text-align: center;
             padding: 15px;
@@ -269,24 +264,35 @@
 </head>
 <body data-theme="light">
 
+    <!-- Üst Bar -->
     <header>
         <a href="#" class="logo-area">
-            <img src="logo.jpg" alt="Logo">
+            <img src="logo.jpg" alt="CIO-OS">
         </a>
         <div class="right-title" id="navTitle">Custom ROMs</div>
     </header>
 
+    <!-- Gizli Tetikleyiciler -->
+    <input type="checkbox" id="settings-toggle" class="modal-toggle">
+    <input type="checkbox" id="contact-toggle" class="modal-toggle">
+    <input type="checkbox" id="about-toggle" class="modal-toggle">
+    <input type="checkbox" id="bug-toggle" class="modal-toggle">
+    <input type="checkbox" id="survey-toggle" class="modal-toggle">
+
+    <!-- Üst Menü Butonları -->
     <div class="top-menu-bar">
-        <button type="button" onclick="openModal('settingsModal')">⚙️ <span id="mSettings">Settings</span></button>
-        <button type="button" onclick="openModal('contactModal')">📞 <span id="mContact">Contact</span></button>
-        <button type="button" onclick="openModal('aboutModal')">ℹ️ <span id="mAbout">About Us</span></button>
-        <button type="button" onclick="openModal('bugModal')">😐 <span id="mBug">Bug Report</span></button>
-        <button type="button" onclick="openModal('surveyModal')">📊 <span id="mSurvey">Survey</span></button>
+        <label for="settings-toggle" class="menu-btn">⚙️ <span id="mSettings">Settings</span></label>
+        <label for="contact-toggle" class="menu-btn">📞 <span id="mContact">Contact</span></label>
+        <label for="about-toggle" class="menu-btn">ℹ️ <span id="mAbout">About Us</span></label>
+        <label for="bug-toggle" class="menu-btn">😐 <span id="mBug">Bug Report</span></label>
+        <label for="survey-toggle" class="menu-btn">📊 <span id="mSurvey">Survey</span></label>
     </div>
 
+    <!-- Ana İçerik -->
     <main>
         <h2 class="section-title" id="mainHeaderTitle">Custom ROMs</h2>
         
+        <!-- Note 3 Rom Kutusu -->
         <div class="rom-card">
             <img src="N9000.png" alt="Note 3 Resmi" class="rom-img">
             <div class="rom-details">
@@ -302,6 +308,7 @@
             </div>
         </div>
 
+        <!-- Grand Prime Plus Rom Kutusu -->
         <div class="rom-card">
             <img src="grandpp.png" alt="Grand Prime Plus Resmi" class="rom-img">
             <div class="rom-details">
@@ -321,36 +328,37 @@
         </div>
     </main>
 
-    <div class="modal" id="settingsModal" onclick="if(event.target === this) closeModal('settingsModal')">
+    <!-- AYARLAR MODALI -->
+    <div class="modal-overlay" id="settingsModal">
         <div class="modal-content">
-            <button type="button" class="modal-close" onclick="closeModal('settingsModal')">&times;</button>
+            <label for="settings-toggle" class="modal-close">&times;</label>
             <h2 id="sTitle">Settings</h2>
             <label id="sThemeLabel">Theme (Background):</label>
             <div class="theme-buttons">
-                <button type="button" class="theme-btn active" id="btnLight" onclick="setTheme('light')">White / Weiß</button>
-                <button type="button" class="theme-btn" id="btnDark" onclick="setTheme('dark')">Black / Schwarz</button>
+                <button type="button" class="theme-btn active" id="btnWhite" onclick="setTheme('white')">White</button>
+                <button type="button" class="theme-btn" id="btnBlack" onclick="setTheme('black')">Black</button>
             </div>
             <label id="sLangLabel">Language:</label>
             <div class="lang-buttons">
                 <button type="button" class="lang-btn" id="langTr" onclick="setLang('tr')">Türkçe</button>
                 <button type="button" class="lang-btn active" id="langEn" onclick="setLang('en')">English</button>
-                <button type="button" class="lang-btn" id="langDe" onclick="setLang('de')">Deutsch</button>
             </div>
         </div>
     </div>
 
-    <div class="modal" id="contactModal" onclick="if(event.target === this) closeModal('contactModal')">
+    <!-- ULAŞIM MODALI -->
+    <div class="modal-overlay" id="contactModal">
         <div class="modal-content">
-            <button type="button" class="modal-close" onclick="closeModal('contactModal')">&times;</button>
+            <label for="contact-toggle" class="modal-close">&times;</label>
             <h2 id="cTitle">Contact</h2>
-            <p><strong>Gmail:</strong><br>ciooosofficial@gmail.com</p>
-            <p style="margin-top: 15px;"><strong>Instagram:</strong><br>cio_os_official</p>
+            <p><strong>Instagram:</strong><br><a href="https://instagram.com/cio_os_official" target="_blank" style="color: var(--link-color); text-decoration: none;">cio_os_official</a></p>
         </div>
     </div>
 
-    <div class="modal" id="aboutModal" onclick="if(event.target === this) closeModal('aboutModal')">
+    <!-- BİZLE İLGİLİ MODALI -->
+    <div class="modal-overlay" id="aboutModal">
         <div class="modal-content">
-            <button type="button" class="modal-close" onclick="closeModal('aboutModal')">&times;</button>
+            <label for="about-toggle" class="modal-close">&times;</label>
             <h2 id="aTitle">About Us</h2>
             <p id="aDesc">This project is developed in <strong>Türkiye</strong>.</p>
             <br>
@@ -363,21 +371,22 @@
         </div>
     </div>
 
-    <div class="modal" id="bugModal" onclick="if(event.target === this) closeModal('bugModal')">
+    <!-- HATA BİLDİRME MODALI -->
+    <div class="modal-overlay" id="bugModal">
         <div class="modal-content">
-            <button type="button" class="modal-close" onclick="closeModal('bugModal')">&times;</button>
+            <label for="bug-toggle" class="modal-close">&times;</label>
             <h2 id="bTitle">Bug Report</h2>
-            <p><strong>Gmail:</strong><br>ciooosofficial@gmail.com</p>
-            <p style="margin-top: 15px;"><strong>Instagram:</strong><br>cio_os_official</p>
+            <p><strong>Instagram:</strong><br><a href="https://instagram.com/cio_os_official" target="_blank" style="color: var(--link-color); text-decoration: none;">cio_os_official</a></p>
         </div>
     </div>
 
-    <div class="modal" id="surveyModal" onclick="if(event.target === this) closeModal('surveyModal')">
+    <!-- ANKET MODALI -->
+    <div class="modal-overlay" id="surveyModal">
         <div class="modal-content">
-            <button type="button" class="modal-close" onclick="closeModal('surveyModal')">&times;</button>
+            <label for="survey-toggle" class="modal-close">&times;</label>
             <h2 id="suTitle">Survey</h2>
             <p id="suDesc">Write your desired Custom ROM option for any device.</p>
-            <p style="margin-top: 10px; font-weight: bold; color: #2e7d32;" id="suSub">You can write here (Instagram: cio_os_official)</p>
+            <p style="margin-top: 10px; font-weight: bold; color: #2e7d32;" id="suSub">You can write here (Instagram: <a href="https://instagram.com/cio_os_official" target="_blank" style="color: var(--link-color); text-decoration: none;">cio_os_official</a>)</p>
         </div>
     </div>
 
@@ -386,49 +395,34 @@
     </footer>
 
     <script>
-        function openModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.style.display = 'flex';
-                modal.classList.add('active');
-            }
-        }
-
-        function closeModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.style.display = 'none';
-                modal.classList.remove('active');
-            }
-        }
-
         function setTheme(theme) {
-            document.body.setAttribute('data-theme', theme);
-            if(theme === 'dark') {
-                document.getElementById('btnDark').classList.add('active');
-                document.getElementById('btnLight').classList.remove('active');
+            if(theme === 'black') {
+                document.body.setAttribute('data-theme', 'dark');
+                document.getElementById('btnBlack').classList.add('active');
+                document.getElementById('btnWhite').classList.remove('active');
             } else {
-                document.getElementById('btnLight').classList.add('active');
-                document.getElementById('btnDark').classList.remove('active');
+                document.body.setAttribute('data-theme', 'light');
+                document.getElementById('btnWhite').classList.add('active');
+                document.getElementById('btnBlack').classList.remove('active');
             }
         }
 
         const texts = {
             tr: {
                 settings: "Ayarlar",
-                contact: "Ulaşım",
-                about: "Bizle İlgili",
-                bug: "Hata Bildirme",
+                contact: "İletişim",
+                about: "Hakkımızda",
+                bug: "Hata Bildir",
                 survey: "Anket",
                 customRoms: "Custom ROMs",
                 upcoming: "Yeni Romlar Sonra Gelecek...",
                 sTitle: "Ayarlar",
-                sThemeLabel: "Arka Menü Rengi (Tema):",
-                sLangLabel: "Dil Seçimi (Language):",
-                cTitle: "Ulaşım",
-                aTitle: "Bizle İlgili",
+                sThemeLabel: "Tema (Arka Plan):",
+                sLangLabel: "Dil Seçimi:",
+                cTitle: "İletişim",
+                aTitle: "Hakkımızda",
                 aDesc: "Bu proje <strong>Türkiye</strong>'de geliştirilmektedir.",
-                bTitle: "Hata Bildirme",
+                bTitle: "Hata Bildirimi",
                 suTitle: "Anket",
                 suDesc: "İstediğiniz Cihaza Custom Rom Seçeneğinizi Yazın.",
                 suSub: "Buraya Yazabilirsiniz (Instagram: cio_os_official)",
@@ -465,38 +459,13 @@
                 model: "Model Number:",
                 code: "Codename:",
                 date: "Release Date:"
-            },
-            de: {
-                settings: "Einstellungen",
-                contact: "Kontakt",
-                about: "Über Uns",
-                bug: "Fehler melden",
-                survey: "Umfrage",
-                customRoms: "Custom ROMs",
-                upcoming: "Neue ROMs folgen in Kürze...",
-                sTitle: "Einstellungen",
-                sThemeLabel: "Thema (Hintergrund):",
-                sLangLabel: "Sprache:",
-                cTitle: "Kontakt",
-                aTitle: "Über Uns",
-                aDesc: "Dieses Projekt wird in der <strong>Türkei</strong> entwickelt.",
-                bTitle: "Fehler melden",
-                suTitle: "Umfrage",
-                suDesc: "Schreiben Sie Ihre gewünschte Custom-ROM-Option für ein beliebiges Gerät.",
-                suSub: "Sie können hier schreiben (Instagram: cio_os_official)",
-                noteTested: "(Nicht getestet)",
-                downloadText: "ROM-Link herunterladen",
-                romDevStatus: "(In Entwicklung / Demnächst)",
-                proc: "Prozessor:",
-                model: "Modellnummer:",
-                code: "Codename:",
-                date: "Erscheinungsdatum:"
             }
         };
 
         function setLang(lang) {
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById('lang' + lang.charAt(0).toUpperCase() + lang.slice(1)).classList.add('active');
+            const langBtn = document.getElementById('lang' + lang.charAt(0).toUpperCase() + lang.slice(1));
+            if(langBtn) langBtn.classList.add('active');
 
             document.getElementById('mSettings').innerText = texts[lang].settings;
             document.getElementById('mContact').innerText = texts[lang].contact;
@@ -524,5 +493,22 @@
 
             const labels1 = document.querySelectorAll('.rom-card:nth-child(2) .rom-details p strong');
             if(labels1.length >= 4) {
+                labels1[0].innerText = texts[lang].proc;
+                labels1[1].innerText = texts[lang].model;
+                labels1[2].innerText = texts[lang].code;
+                labels1[3].innerText = texts[lang].date;
+            }
+            const labels2 = document.querySelectorAll('.rom-card:nth-child(3) .rom-details p strong');
+            if(labels2.length >= 4) {
+                labels2[0].innerText = texts[lang].proc;
+                labels2[1].innerText = texts[lang].model;
+                labels2[2].innerText = texts[lang].code;
+                labels2[3].innerText = texts[lang].date;
+            }
+        }
 
-           
+        setLang('en');
+        setTheme('white');
+    </script>
+</body>
+</html>
