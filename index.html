@@ -267,7 +267,8 @@
     <!-- Üst Bar -->
     <header>
         <a href="#" class="logo-area">
-            <img src="logo.jpg" alt="CIO-OS">
+            <img src="logo.jpg" id="site-logo" alt="CIO-OS">
+            
         </a>
         <div class="right-title" id="navTitle">Custom ROMs</div>
     </header>
@@ -510,5 +511,24 @@
         setLang('en');
         setTheme('white');
     </script>
+  <script>
+    const body = document.body;
+    const logo = document.getElementById('site-logo');
+
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.attributeName === 'data-theme') {
+                if (body.getAttribute('data-theme') === 'dark') {
+                    logo.src = 'Logo2.jpg';
+                } else {
+                    logo.src = 'logo.jpg';
+                }
+            }
+        });
+    });
+
+    observer.observe(body, { attributes: true });
+  </script>
+    
 </body>
 </html>
