@@ -510,8 +510,7 @@
 
         setLang('en');
         setTheme('white');
-    </script>
-  <script>
+        
     const body = document.body;
     const logo = document.getElementById('site-logo');
 
@@ -519,7 +518,7 @@
         mutations.forEach((mutation) => {
             if (mutation.attributeName === 'data-theme') {
                 if (body.getAttribute('data-theme') === 'dark') {
-                    logo.src = 'Logo2.jpg';
+                    logo.src = 'logo2.jpg';
                 } else {
                     logo.src = 'logo.jpg';
                 }
@@ -528,7 +527,8 @@
     });
 
     observer.observe(body, { attributes: true });
-  </script>
+    </script>
+    
     
 </body>
 </html>
