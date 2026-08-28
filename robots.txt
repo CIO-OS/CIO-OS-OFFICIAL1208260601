@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cio-os.github.io/CIO-OS-OFFICIAL1208260601/sitemap.xml
